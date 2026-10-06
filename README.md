@@ -6,12 +6,19 @@ metodología de diseño de FSM vista en clase.
 
 José Daniel Cuá Fagiani — Carné 21200
 
+## Circuito principal
+
+![Circuito main: PinChecker y LockController conectados](img/circuito_main.png)
+
+Las dos FSMs viven en el mismo archivo y se conectan por cable: `match` y `wrong` salen de
+`PinChecker` (Mealy) y entran a `LockController` (Moore). `CLK` y `Reset` son globales.
+
 ## Contenido
 
 1. [Diseño general y factorización](docs/01-diseno-general.md)
 2. [PinChecker — FSM Mealy](docs/02-pin-checker-mealy.md)
 3. [LockController — FSM Moore](docs/03-lock-controller-moore.md)
-4. [Verificación (Logisim + simulación independiente)](docs/04-verificacion.md)
+4. [Verificación (Logisim, vectores de prueba y escenarios)](docs/04-verificacion.md)
 5. [Cómo correr las pruebas por línea de comandos](tests/README.md)
 
 ## Resultados principales
@@ -38,8 +45,16 @@ circuitos/  cerradura_pin.circ -- UN solo archivo de Logisim con tres circuitos:
               - LockController: FSM Moore completa (3 flip-flops D + compuertas AND/OR/NOT)
 tests/      vectores de prueba (--test-vector) usados para verificar cada circuito,
             con instrucciones exactas para reproducir la verificación
-img/        capturas y diagramas (fase 2)
+img/        diagramas de estados y capturas de los circuitos
 ```
+
+## Cómo abrir y probar
+
+1. Instalar [Logisim Evolution](https://github.com/logisim-evolution/logisim-evolution) v4.1.0 o superior.
+2. Abrir `circuitos/cerradura_pin.circ`. Con la herramienta de mano (Poke) se mueven las
+   entradas `D`, `L`, `Reset`; un pulso de reloj son dos clics en `CLK` (o `Simulate → Auto-Tick`).
+   `Reset` es asíncrono: ponerlo en 1 y luego en 0 deja las FSMs en su estado inicial.
+3. Para verificar por consola, ver [tests/README.md](tests/README.md) (todas deben terminar con `Failed: 0`).
 
 ## Herramientas usadas
 
@@ -48,8 +63,6 @@ img/        capturas y diagramas (fase 2)
 - **sympy** (Python) para minimizar las ecuaciones de siguiente-estado y de salida por
   Quine-McCluskey, evitando errores de Karnaugh hecho a mano.
 - **openpyxl** (Python) para generar las tablas de FSM en Excel.
-
-Dependencias de Python en [`requirements.txt`](requirements.txt).
 
 ## Video
 

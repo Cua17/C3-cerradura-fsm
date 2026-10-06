@@ -1,6 +1,6 @@
 # Verificación
 
-Cada FSM se verificó dos veces, por dos caminos independientes:
+Cada FSM se verificó por tres caminos:
 
 1. **Minimización simbólica** (`sympy.logic.boolalg.SOPform`, ver docs 02 y 03) —
    confirma que las ecuaciones booleanas derivadas cubren exactamente la tabla de
@@ -12,9 +12,9 @@ Cada FSM se verificó dos veces, por dos caminos independientes:
    `LockController`, más los escenarios completos de abajo sobre `main`. Confirma que el
    circuito construido con compuertas implementa la tabla sin errores de cableado.
    Ver [`../circuitos/`](../circuitos/).
-3. **Simulación independiente en Python** (ciclo a ciclo, sincrónica), reimplementando
-   las mismas ecuaciones desde cero para tener una tercera fuente de verdad, y usada
-   para generar escenarios completos de uso real (no solo tablas de verdad aisladas).
+3. **Escenarios completos de uso** sobre el circuito `main` (las dos FSMs conectadas),
+   en [`../tests/integracion_completa.txt`](../tests/integracion_completa.txt), no solo tablas de
+   verdad aisladas.
 
 ## Escenarios simulados
 

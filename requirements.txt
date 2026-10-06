@@ -1,2 +1,0 @@
-sympy>=1.12
-openpyxl>=3.1

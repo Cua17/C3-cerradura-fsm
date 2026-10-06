@@ -18,25 +18,12 @@ la cerradura.
 5 estados: `Locked0`, `Locked1`, `Locked2` (0, 1 y 2 intentos fallidos), `Alarm`,
 `Unlocked`. Doble círculo en `Locked0` (estado de reset).
 
-```
-      wrong           wrong           wrong
- ┌──▶(Locked0)──────▶(Locked1)──────▶(Locked2)──────▶(Alarm)◀── se queda aquí
- │       │  \            │  \            │  \                  hasta Reset externo
- │       │   \match       │   \match      │   \match
- │       │    \           │    \          │    \
- │       │     ▼          │     ▼         │     ▼
- │       │   (Unlocked)◀──┴─────┴─────────┘
- │       │        │
- │       └────────┘  (sin match/wrong: se queda en su propio estado)
- │                │
- └────────L=1─────┘
-```
+![Diagrama de estados de LockController (Moore)](../img/diagrama_lockcontroller.png)
 
 En texto: desde `Locked0`, `Locked1` o `Locked2`, `match=1` va directo a `Unlocked` (sin
 importar cuántos fallos llevaba, un PIN correcto siempre abre); `wrong=1` avanza un
 paso en la cadena de fallos (`Locked0→Locked1→Locked2→Alarm`); sin `match` ni `wrong`,
-se queda en su propio estado. `Alarm` es un pozo: solo el `Reset` global (línea punteada
-no dibujada, es la misma señal de reset de todo el circuito) saca de ahí, de vuelta a
+se queda en su propio estado. `Alarm` es un pozo: solo el `Reset` global (la misma señal de reset de todo el circuito) saca de ahí, de vuelta a
 `Locked0`. `Unlocked` se queda ahí hasta que `L=1`, y regresa a `Locked0` (no a
 `Locked2`: cada intento nuevo empieza limpio).
 
@@ -127,13 +114,15 @@ directamente la lógica de salida.
 
 ## 8. Esquemático
 
+![Circuito LockController en Logisim](../img/circuito_lockcontroller.png)
+
 Construido en Logisim en el circuito `LockController` de
 [`../circuitos/cerradura_pin.circ`](../circuitos/cerradura_pin.circ) (en las ecuaciones,
 `M` = pin `match` y `W` = pin `wrong`):
 
 - **Registro de estado:** 3 flip-flops D (`FF_Q2`, `FF_Q1`, `FF_Q0`), mismo `CLK`; `Reset`
   entra al pin R de cada uno (reset asíncrono a `000` = `Locked0`).
-- **Lógica de siguiente estado:** 9 productos AND (el término `Q1·Q0` se comparte entre
+- **Lógica de siguiente estado:** 10 productos AND (el término `Q1·Q0` se comparte entre
   `N1`, `N0` y `alarm`) y un OR de 3 entradas por cada bit: `N2`, `N1`, `N0`.
 - **Lógica de salida (Moore, solo depende de `Q2 Q1 Q0`):** `unlock` sale directo del
   riel `Q2`; `alarm` es un AND de `Q1` y `Q0`; `locked` es un OR de dos ANDs

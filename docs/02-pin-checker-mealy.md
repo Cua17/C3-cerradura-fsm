@@ -16,16 +16,9 @@ Sigue el mismo procedimiento de 7 pasos visto en clase (Ch3, "FSM Design Procedu
 dígito correcto completa el PIN). Como es Mealy, la salida va **sobre la flecha**, no
 dentro del círculo: `entrada/salida`.
 
-Cadena de avance con `D=1` (sin salida activa todavía):
+![Diagrama de estados de PinChecker (Mealy)](../img/diagrama_pinchecker.png)
 
-```
-(S0) ──D=1/–──▶ (S1) ──D=1/–──▶ (S2) ──D=1/–──▶ (S3) ──D=1/match──▶ (S0)
-```
-
-Y desde **cualquiera** de los cuatro estados, `D=0` regresa directo a `S0` con la
-salida `wrong=1` (flechas no dibujadas arriba para no saturar el diagrama, pero están
-todas en la tabla de la sección 3). El estado `S0` lleva doble círculo por ser también
-el estado de reset.
+Cada flecha lleva `D / match wrong`. Con `D=1` se avanza un estado (`S0→S1→S2→S3`) y en `S3` un `D=1` completa el PIN (`match=1`) y vuelve a `S0`. Desde **cualquiera** de los cuatro estados, `D=0` regresa a `S0` con `wrong=1`. `S0` lleva doble círculo por ser también el estado de reset.
 
 ## 3. Tabla de transición de estados (FSM State Transition Table)
 
@@ -85,6 +78,8 @@ $N_1 = 1\cdot(1\oplus1) = 1\cdot 0 = 0$ ✓, $N_0 = 1\cdot\overline{1} = 0$ ✓,
 $match = 1\cdot1\cdot1 = 1$ ✓.
 
 ## 7. Esquemático
+
+![Circuito PinChecker en Logisim](../img/circuito_pinchecker.png)
 
 Igual que el esquemático de FSM visto en clase (state register + next state logic + output
 logic), construido en Logisim en el circuito `PinChecker` de
