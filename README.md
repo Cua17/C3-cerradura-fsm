@@ -66,5 +66,4 @@ img/        diagramas de estados y capturas de los circuitos
 
 ## Video
 
-Pendiente — enlace privado de YouTube explicando la FSM, su funcionalidad y las
-decisiones de construcción (máx. 5 min, fase 3).
+Explicación de la FSM, su funcionalidad y las decisiones de construcción: https://youtu.be/OGVU0EUnTVM
