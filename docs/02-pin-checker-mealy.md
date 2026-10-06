@@ -86,8 +86,16 @@ $match = 1\cdot1\cdot1 = 1$ ✓.
 
 ## 7. Esquemático
 
-Registro de estado: 2 flip-flops D (`Q1`, `Q0`), reloj compartido con `LockController`,
-reset síncrono a `00`. Lógica de siguiente estado: un XOR y dos AND para `N1`, un AND
-con inversor para `N0` (ver ecuaciones arriba). Lógica de salida: un AND de 3 entradas
-para `match` (`D·Q1·Q0`), un inversor para `wrong`. Construido y verificado en Logisim
-en [`../circuitos/`](../circuitos/) (fase 2).
+Igual que el esquemático de FSM visto en clase (state register + next state logic + output
+logic), construido en Logisim en el circuito `PinChecker` de
+[`../circuitos/cerradura_pin.circ`](../circuitos/cerradura_pin.circ):
+
+- **Registro de estado:** 2 flip-flops D (`FF_Q1`, `FF_Q0`), con el mismo `CLK` de todo el
+  sistema. `Reset` entra al pin R de cada flip-flop (reset asíncrono a `00`).
+- **Lógica de siguiente estado:** `N1` = dos AND de 3 entradas (`D·Q1'·Q0` y `D·Q1·Q0'`)
+  llevadas a un OR; `N0` = un AND (`D·Q0'`) conectado directo al flip-flop.
+- **Lógica de salida (Mealy):** `match` = AND de 3 entradas (`D·Q1·Q0`); `wrong` = salida
+  del inversor de `D`.
+- Cada variable tiene un riel vertical y su complemento (un NOT por variable), y las
+  compuertas toman sus entradas de esos rieles. `Q1` y `Q0` regresan por cable desde los
+  flip-flops a sus rieles, y también salen a pines para poder ver el estado.

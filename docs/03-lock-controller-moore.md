@@ -127,6 +127,16 @@ directamente la lógica de salida.
 
 ## 8. Esquemático
 
-Registro de estado: 3 flip-flops D, reset síncrono a `000`. Lógica de siguiente estado
-y de salida según las ecuaciones de arriba. Construido y verificado en Logisim en
-[`../circuitos/`](../circuitos/) (fase 2).
+Construido en Logisim en el circuito `LockController` de
+[`../circuitos/cerradura_pin.circ`](../circuitos/cerradura_pin.circ) (en las ecuaciones,
+`M` = pin `match` y `W` = pin `wrong`):
+
+- **Registro de estado:** 3 flip-flops D (`FF_Q2`, `FF_Q1`, `FF_Q0`), mismo `CLK`; `Reset`
+  entra al pin R de cada uno (reset asíncrono a `000` = `Locked0`).
+- **Lógica de siguiente estado:** 9 productos AND (el término `Q1·Q0` se comparte entre
+  `N1`, `N0` y `alarm`) y un OR de 3 entradas por cada bit: `N2`, `N1`, `N0`.
+- **Lógica de salida (Moore, solo depende de `Q2 Q1 Q0`):** `unlock` sale directo del
+  riel `Q2`; `alarm` es un AND de `Q1` y `Q0`; `locked` es un OR de dos ANDs
+  (`Q0'·Q2'` y `Q1'·Q2'`).
+- Mismo estilo de cableado que `PinChecker`: rieles por variable y complemento, y la
+  realimentación de cada `Q` vuelve por cable a su riel.
